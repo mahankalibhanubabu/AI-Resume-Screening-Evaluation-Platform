@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelIQ ATS Resume Analyzer | AI-Powered Hiring Intelligence</title>
+    <meta name="description" content="Upload your resume and get an instant AI-powered ATS score, compatibility rating, and detailed analysis powered by Gemini AI.">
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════ HERO HEADER ═══════════════════════════════════════ -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <img src="assets/Feeliq.webp" alt="FeelIQ Logo" class="brand-logo">
+                <span class="brand-name">FeelIQ</span>
+            </div>
+            <p class="header-tagline">AI-Powered ATS Resume Analyzer</p>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════ MAIN ═══════════════════════════════════════════════ -->
+    <main class="main-container">
+
+        <!-- ─── Upload Card ─── -->
+        <section class="card upload-card" id="uploadSection">
+            <div class="card-header">
+                <div class="card-icon"><i class="fa-solid fa-file-magnifying-glass"></i></div>
+                <h1 class="card-title">Resume Analysis Portal</h1>
+                <p class="card-subtitle">Upload a candidate's resume for instant Gemini AI analysis.</p>
+            </div>
+
+            <form id="resumeForm" novalidate>
+
+                <!-- Full Name -->
+                <div class="input-group" id="grp-name">
+                    <label for="candidateName">
+                        <i class="fa-solid fa-user"></i> Candidate Name
+                    </label>
+                    <input
+                        type="text"
+                        id="candidateName"
+                        name="full_name"
+                        placeholder="e.g. Shruti Sharma"
+                        autocomplete="name"
+                        required>
+                    <span class="field-error" id="err-name"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="input-group" id="grp-email">
+                    <label for="email">
+                        <i class="fa-solid fa-envelope"></i> Email Address
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="e.g. shruti@example.com"
+                        autocomplete="email"
+                        required>
+                    <span class="field-error" id="err-email"></span>
+                </div>
+
+                <!-- LinkedIn -->
+                <div class="input-group" id="grp-linkedin">
+                    <label for="linkedin">
+                        <i class="fa-brands fa-linkedin"></i> LinkedIn Profile URL
+                    </label>
+                    <input
+                        type="url"
+                        id="linkedin"
+                        name="linkedin"
+                        placeholder="https://linkedin.com/in/shruti-sharma"
+                        autocomplete="url"
+                        required>
+                    <span class="field-error" id="err-linkedin"></span>
+                </div>
+
+                <!-- Resume Upload -->
+                <div class="input-group" id="grp-resume">
+                    <label class="upload-label">
+                        <i class="fa-solid fa-file-pdf"></i> Resume (PDF only, max 5 MB)
+                    </label>
+
+                    <label for="resume" class="upload-box" id="uploadBox">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <h3>Drop your PDF here</h3>
+                        <p>or click to browse</p>
+                    </label>
+
+                    <input
+                        type="file"
+                        id="resume"
+                        name="resume"
+                        accept=".pdf"
+                        hidden>
+
+                    <div id="fileName" class="file-name-display">
+                        <i class="fa-regular fa-file"></i> No file selected
+                    </div>
+                    <span class="field-error" id="err-resume"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn" class="btn-submit">
+                    <span id="btnText"><i class="fa-solid fa-rocket"></i> Analyze Resume</span>
+                    <span id="btnSpinner" class="btn-spinner hidden">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i> Analyzing...
+                    </span>
+                </button>
+
+            </form>
+        </section>
+
+        <!-- ─── Progress Steps ─── -->
+        <section class="progress-section hidden" id="progressSection">
+            <div class="step-track">
+                <div class="step" id="step1">
+                    <div class="step-icon"><i class="fa-solid fa-upload"></i></div>
+                    <span>Uploading Resume</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" id="step2">
+                    <div class="step-icon"><i class="fa-solid fa-brain"></i></div>
+                    <span>AI Analysis</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" id="step3">
+                    <div class="step-icon"><i class="fa-solid fa-chart-bar"></i></div>
+                    <span>Generating Report</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" id="step4">
+                    <div class="step-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <span>Sending Email</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" id="step5">
+                    <div class="step-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <span>Completed</span>
+                </div>
+            </div>
+            <p class="progress-msg" id="progressMsg">Uploading resume...</p>
+        </section>
+
+        <!-- ─── Error Banner ─── -->
+        <div class="alert alert-error hidden" id="errorBanner">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span id="errorMsg"></span>
+            <button class="alert-close" id="closeError" aria-label="Dismiss error">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- ─── ATS Result Card ─── -->
+        <section class="result-card hidden" id="resultSection">
+
+            <!-- Success Header -->
+            <div class="result-header">
+                <i class="fa-solid fa-circle-check result-check"></i>
+                <h2>Analysis Complete!</h2>
+                <p id="resultCandidateName" class="result-candidate"></p>
+            </div>
+
+            <!-- Top Metrics Row -->
+            <div class="metrics-row">
+
+                <!-- ATS Score Circle -->
+                <div class="metric-card score-card">
+                    <div class="circular-progress" id="circularProgress">
+                        <svg viewBox="0 0 120 120" class="progress-ring">
+                            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+                            <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="50"
+                                stroke-dasharray="314.16"
+                                stroke-dashoffset="314.16"/>
+                        </svg>
+                        <div class="score-label">
+                            <span id="atsScoreVal" class="score-number">0</span>
+                            <span class="score-unit">ATS Score</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shortlisted Badge -->
+                <div class="metric-card badge-card">
+                    <div class="badge-wrap">
+                        <div class="shortlist-badge" id="shortlistBadge">
+                            <i class="fa-solid fa-star badge-icon" id="badgeIcon"></i>
+                            <span id="shortlistedText">—</span>
+                        </div>
+                        <p class="badge-label">Shortlisted</p>
+                    </div>
+
+                    <div class="mini-metrics">
+                        <div class="mini-metric">
+                            <span class="mini-label">AI Rating</span>
+                            <span class="mini-value" id="aiRatingVal">—</span>
+                        </div>
+                        <div class="mini-metric">
+                            <span class="mini-label">Compatibility</span>
+                            <span class="mini-value" id="compatibilityVal">—</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Detail Grid -->
+            <div class="detail-grid">
+
+                <div class="detail-item">
+                    <div class="detail-icon"><i class="fa-solid fa-briefcase"></i></div>
+                    <div>
+                        <p class="detail-label">Experience</p>
+                        <p class="detail-value" id="experienceVal">—</p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <div class="detail-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                    <div>
+                        <p class="detail-label">Recommendation</p>
+                        <p class="detail-value" id="recommendationVal">—</p>
+                    </div>
+                </div>
+
+                <div class="detail-item detail-full">
+                    <div class="detail-icon"><i class="fa-solid fa-code"></i></div>
+                    <div>
+                        <p class="detail-label">Key Skills</p>
+                        <div class="skills-wrap" id="skillsWrap"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Email Notice -->
+            <div class="email-notice">
+                <i class="fa-solid fa-envelope-circle-check"></i>
+                <span>A detailed report has been emailed to the candidate automatically.</span>
+            </div>
+
+            <!-- Analyze Another -->
+            <button class="btn-reset" id="resetBtn">
+                <i class="fa-solid fa-rotate-left"></i> Analyze Another Resume
+            </button>
+
+        </section>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════ FOOTER ═══════════════════════════════════════════ -->
+    <footer class="site-footer">
+        <p>© 2025 FeelIQ · Powered by Gemini AI &amp; n8n Automation</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

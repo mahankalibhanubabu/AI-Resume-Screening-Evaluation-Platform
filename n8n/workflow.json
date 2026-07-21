@@ -1,0 +1,220 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "resume",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d07f09d7-8673-42d6-9358-9fb8cf3149b1",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "SRAVYA KAMURTHY\\n 9392745695 # sravyakamurthy@gmail.com §\\ngithub.com/Sravyakamurthy ï linkedin.com/in/kamurthy-sravya\\nSUMMARY\\nComputer Science (AI & ML) undergraduate with strong foundation in Python, object-oriented programming, and data\\nstructures. Experienced in building AI-driven applications including a healthcare matching platform and NLP-based\\nrecommendation system. Hands-on experience in data preprocessing, feature engineering, and developing end-to-end\\nmachine learning pipelines. Interested in applying AI to real-world problems and building scalable software solutions.\\nSKILLS\\nLanguage...",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an ATS Resume Analyzer.\n\nAnalyze the uploaded resume and return ONLY a valid JSON object.\n\nExtract the following details:\n\n- Candidate Name\n- Candidate Email\n- LinkedIn URL\n- AI Rating (0-100)\n- Compatibility Rating (0-10)\n- ATS Score (0-100)\n- Skills\n- Experience\n- Recommendation\n- Shortlisted (Yes or No)\n\nRules:\n1. Return ONLY valid JSON.\n2. Do NOT include markdown.\n3. Do NOT include ```json.\n4. Do NOT include explanations or extra text.\n5. If a value is missing, use an empty string \"\".\n\nOutput Format:\n\n{\n  \"candidate_name\": \"\",\n  \"candidate_email\": \"\",\n  \"linkedin\": \"\",\n  \"ai_rating\": 0,\n  \"compatibility_rating\": \"/10\",\n  \"ats_score\": 82,\n  \"skills\": \"Python, SQL,\",\n  \"experience\": \"\",\n  \"recommendation\": \"\",\n  \"shortlisted\": \"No\"\n}"
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "=Resume: {{ $json.text }}  Job Description: {{ $json.job_description }}{{ $json.text }}"
+            },
+            {
+              "type": "AIMessagePromptTemplate",
+              "message": "="
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        400,
+        0
+      ],
+      "id": "8dacfe74-b579-4b7a-b79d-6a5844b5e45e",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "sendTo": "sravyakamurthy@gmail.com",
+        "subject": "New Candidate CV Awaiting Review",
+        "message": "=Candidate Name: {{$json.candidate_name}}  Candidate Email: {{$json.candidate_email}}  Candidate LinkedIn: {{$json.linkedin}}  AI Rating: {{$json.ai_rating}}  Compatibility Rating: {{$json.compatibility_rating}}  ATS Score: <span style=\"color:#4CAF50;font-size:30px;font-weight:bold\"> {{$json.ats_score}}/100 </span>  Skills: {{$json.skills}}  Experience: {{$json.experience}}  Recommendation: {{$json.recommendation}}  Shortlisted: {{$json.shortlisted}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        0
+      ],
+      "id": "72e0a911-8e48-4a0e-a784-c636053a8b0b",
+      "name": "Send a message",
+      "webhookId": "09d16ab2-d529-4053-adce-40ff0b2606be",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vXJVS8BPNR3CtuLZ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        208
+      ],
+      "id": "fa6aa1e3-edbc-4a01-9a2d-8aacd08a9116",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "we have recieved your CV",
+        "message": "=Dear {{ $json.full_name }},  \nThank you for submitting your CV. \nYour resume has been analyzed successfully.  ATS Score: {{ $('Basic LLM Chain').item.json.ats_score }}/100  Status: {{ $('Basic LLM Chain').item.json.shortlisted }}  Best Regards, feeliq techologies",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        0
+      ],
+      "id": "b545379b-7594-45b7-a6d1-b58f8bfbf5be",
+      "name": "Send a message1",
+      "webhookId": "522bc240-36e9-4e10-82bd-44fcfe4ab53b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vXJVS8BPNR3CtuLZ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\n\n\"ats_score\": 82,\n\n\"summary\": \"Your resume is well-structured and highlights relevant experience, but could use more targeted keywords to improve ATS compatibility.\"\n\n\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        544,
+        208
+      ],
+      "id": "693cce2a-b7d4-42ff-adb6-d3fccaafe5d1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ats-resume-analyzer",
+        "responseMode": "lastNode",
+        "options": {
+          "allowFileUploads": true,
+          "rawBody": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        0
+      ],
+      "id": "8592bfa4-2d59-4f2d-a7da-7f69ddab5b1f",
+      "name": "Webhook",
+      "webhookId": "6851e9df-7858-45b6-83e4-beb04bd4ae70"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "db255afb-44a9-495a-b22d-e98b99049eaf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e56ee96165ba0f44a554c2cd20fc96346cab1b216d09876cb13ddc2ef20702a9"
+  },
+  "nodeGroups": [],
+  "id": "8KEFl6L1tjemhKvC",
+  "tags": []
+}
