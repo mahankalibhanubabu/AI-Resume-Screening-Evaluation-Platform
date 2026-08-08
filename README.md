@@ -1,3 +1,5 @@
+---
+
 # 🤖 AI Resume Analyzer & ATS
 
 <div align="center">
@@ -8,10 +10,10 @@
 
 <br>
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge\&logo=github)](https://github.com/mahankalibhanubabu/ats)
-[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://www.python.org/)
-[![n8n](https://img.shields.io/badge/n8n-Automation-EA4B71?style=for-the-badge\&logo=n8n\&logoColor=white)](https://n8n.io/)
-[![AI](https://img.shields.io/badge/AI-Powered-7C3AED?style=for-the-badge)](#)
+🔗 **Live Website:**
+https://mahankalibhanubabu.github.io/AI-Resume-Screening-Evaluation-Platform/
+
+<br><br>
 
 </div>
 
@@ -156,23 +158,18 @@ Analysis results are processed into generated reports that can be reviewed after
 
 ### Frontend
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square\&logo=html5\&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square\&logo=css3\&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square\&logo=javascript\&logoColor=black)
+
+\
 
 ### Backend
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square\&logo=python\&logoColor=white)
-
 ### AI & Automation
 
-![n8n](https://img.shields.io/badge/n8n-EA4B71?style=flat-square\&logo=n8n\&logoColor=white)
-![AI](https://img.shields.io/badge/AI%20Workflow-7C3AED?style=flat-square)
+\
 
 ### Development
 
-![Git](https://img.shields.io/badge/Git-F05032?style=flat-square\&logo=git\&logoColor=white)
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square\&logo=github\&logoColor=white)
+\
 
 ---
 
@@ -538,12 +535,6 @@ Building at the intersection of:
 **Automation × DevOps × AI × Software Engineering**
 
 <br>
-
-[![GitHub](https://img.shields.io/badge/GitHub-MahankaliBhanuBabu-181717?style=for-the-badge\&logo=github)](https://github.com/mahankalibhanubabu)
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Mahankali%20Bhanu%20Babu-0A66C2?style=for-the-badge\&logo=linkedin)](https://www.linkedin.com/in/mahankali-bhanubabu-devops-developer/)
-
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-111827?style=for-the-badge)](https://mahankali-portfolio.vercel.app/)
 
 </div>
 
