@@ -2,7 +2,6 @@
 
 # 🤖 AI Resume Analyzer & ATS
 
-<div align="center">
 
 ### Analyze. Optimize. Improve. Get ATS-Ready.
 
